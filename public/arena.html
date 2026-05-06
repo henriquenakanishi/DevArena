@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevArena | Arena</title>
+
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="icon" href="assets/imgs/Favicon.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    <header>
+        <nav class="navbar container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="assets/imgs/DevArena.png" alt="DevArena">
+                </a>
+            </div>
+
+            <ul class="menu">
+                <li><a href="index.html">Início</a></li>
+            </ul>
+
+            <a href="#" class="btn-cadastro">Entrar</a>
+        </nav>
+    </header>
+
+    <main class="arena container">
+
+        <h1>Arena de Digitação</h1>
+
+        <div class="stats">⏱️ Tempo: <span id="time">30</span>s</div>
+
+        <div class="word-container" id="wordContainer"></div>
+
+        <textarea id="input" disabled placeholder="Comece a digitar..."></textarea>
+
+        <div class="controls">
+            <button class="btn" onclick="iniciarJogo()">Iniciar treino</button>
+        </div>
+
+        <div id="overlay" style="display: none;"></div>
+        <div id="card_resultado" style="display: none;">
+            <h2>Resultado da Partida</h2>
+
+            <p>WPM: <span id="wpm_final"></span></p>
+            <p>Precisão: <span id="precisao_final"></span>%</p>
+            <p>Tempo: <span id="tempo_final"></span>s</p>
+            <p id="mensagem_recorde"></p>
+
+            <canvas id="graficoWpm"></canvas>
+
+            <button class="btn-restart" onclick="location.reload()">
+                Jogar novamente
+            </button>
+        </div>
+
+    </main>
+
+    <script>
+        const palavrasBase = [
+            "javascript", "codigo", "programar", "velocidade", "teclado", "algoritmo",
+            "função", "variavel", "sistema", "frontend", "backend", "react", "node",
+            "internet", "desenvolvedor", "interface", "pedro", "henrique", "legal", "notebook", "guilherme"
+        ];
+
+        // Estado do jogo
+        let estado = {
+            linhas: [],
+            linhaAtual: 0,
+            palavraAtual: 0,
+            tempo: 30,
+            intervalo: null,
+            acertos: 0,
+            erros: 0,
+            totalDigitadas: 0
+        };
+
+        // Elementos
+        const container = document.getElementById("wordContainer");
+        const input = document.getElementById("input");
+        const timer = document.getElementById("time");
+
+        // =========================
+        // GERAÇÃO
+        // =========================
+        function gerarPalavras(qtdLinhas = 20, qtdPorLinha = 10) {
+            return Array.from({ length: qtdLinhas }, () =>
+                Array.from({ length: qtdPorLinha }, () =>
+                    palavrasBase[Math.floor(Math.random() * palavrasBase.length)]
+                )
+            );
+        }
+
+        // =========================
+        // RENDER
+        // =========================
+        function renderizarLinha() {
+            container.innerHTML = "";
+
+            const linha = estado.linhas[estado.linhaAtual];
+
+            const div = document.createElement("div");
+            div.classList.add("line");
+
+            linha.forEach(palavra => {
+                const span = document.createElement("span");
+                span.textContent = palavra;
+                span.classList.add("word");
+                div.appendChild(span);
+            });
+
+            container.appendChild(div);
+            atualizarDestaque();
+        }
+
+        function atualizarDestaque() {
+            document.querySelectorAll(".word").forEach((el, i) => {
+                el.classList.toggle("current", i === estado.palavraAtual);
+            });
+        }
+
+        // =========================
+        // JOGO
+        // =========================
+        function iniciarJogo() {
+            estado = {
+                linhas: gerarPalavras(),
+                linhaAtual: 0,
+                palavraAtual: 0,
+                tempo: 30,
+                intervalo: null,
+                acertos: 0,
+                erros: 0,
+                totalDigitadas: 0
+            };
+
+            input.disabled = false;
+            input.value = "";
+            input.focus();
+
+            timer.textContent = estado.tempo;
+
+            renderizarLinha();
+            iniciarTimer();
+        }
+
+        function iniciarTimer() {
+            clearInterval(estado.intervalo);
+
+            estado.intervalo = setInterval(() => {
+                estado.tempo--;
+                timer.textContent = estado.tempo;
+
+                if (estado.tempo <= 0) {
+                    clearInterval(estado.intervalo);
+                    input.disabled = true;
+
+                    calcularResultado();
+                }
+            }, 1000);
+        }
+
+        // =========================
+        // INPUT
+        // =========================
+        input.addEventListener("keydown", (e) => {
+            const palavraCorreta = estado.linhas[estado.linhaAtual][estado.palavraAtual];
+            const palavrasDOM = document.querySelectorAll(".word");
+            const atual = palavrasDOM[estado.palavraAtual];
+
+            if (e.key === " ") {
+                e.preventDefault();
+
+                const palavraDigitada = input.value.trim();
+
+                if (palavraDigitada === palavraCorreta) {
+                    atual.classList.add("correct");
+                    estado.acertos++;
+                } else {
+                    atual.classList.add("error");
+                    estado.erros++;
+                }
+
+                estado.totalDigitadas++;
+                proximaPalavra();
+            }
+
+            if (e.key === "Enter") {
+                e.preventDefault();
+
+                clearInterval(estado.intervalo);
+                input.disabled = true;
+                calcularResultado();
+            }
+        });
+
+        function proximaPalavra() {
+            estado.palavraAtual++;
+            input.value = "";
+
+            if (estado.palavraAtual >= estado.linhas[estado.linhaAtual].length) {
+                estado.linhaAtual++;
+                estado.palavraAtual = 0;
+                renderizarLinha();
+            } else {
+                atualizarDestaque();
+            }
+        }
+
+        // =========================
+        // RESULTADO
+        // =========================
+        function calcularResultado() {
+            const tempoMinutos = 30 / 60;
+
+            const wpm = Math.round(estado.acertos / tempoMinutos);
+
+            const precisao = estado.totalDigitadas > 0
+                ? Math.round((estado.acertos / estado.totalDigitadas) * 100)
+                : 0;
+
+            finalizarTeste(wpm, precisao, 30); 
+        }
+
+        function finalizarTeste(wpm, precisao, tempo) {
+            var fkUsuario = sessionStorage.ID_USUARIO || 1;
+
+            fetch("/resultado/cadastrar", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    wpm: wpm,
+                    precisao: precisao,
+                    tempo: tempo,
+                    fkUsuario: fkUsuario
+                })
+            })
+                .then(() => {
+                    mostrarDashboardFinal(wpm, precisao, tempo, fkUsuario);
+                });
+        }
+
+        var graficoWpm;
+
+        function mostrarDashboardFinal(wpm, precisao, tempo, fkUsuario) {
+            document.getElementById("card_resultado").style.display = "block";
+            document.getElementById("overlay").style.display = "block";
+
+            document.getElementById("wpm_final").innerHTML = wpm;
+            document.getElementById("precisao_final").innerHTML = precisao;
+            document.getElementById("tempo_final").innerHTML = tempo;
+
+            fetch(`/resultado/historico/${fkUsuario}`)
+                .then(res => res.json())
+                .then(historico => {
+                    var labels = [];
+                    var dadosWpm = [];
+
+                    var recordeAnterior = 0;
+
+                    for (var i = 0; i < historico.length; i++) {
+                        labels.push(i + 1 + "ª partida");
+                        dadosWpm.push(historico[i].wpm);
+
+                        if (i < historico.length - 1 && historico[i].wpm > recordeAnterior) {
+                            recordeAnterior = historico[i].wpm;
+                        }
+                    }
+
+                    if (wpm > recordeAnterior) {
+                        mensagem_recorde.innerHTML = "🔥 Novo recorde pessoal!";
+                    } else {
+                        mensagem_recorde.innerHTML = "Continue treinando para bater seu recorde!";
+                    }
+
+                    if (graficoWpm) {
+                        graficoWpm.destroy();
+                    }
+
+                    graficoWpm = new Chart(document.getElementById("graficoWpm"), {
+                        type: "line",
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: "Evolução de WPM",
+                                data: dadosWpm,
+                                borderColor: "#facc15",
+                                backgroundColor: "rgba(250, 204, 21, 0.2)",
+                                tension: 0.4,
+                                fill: true
+                            }]
+                        }
+                    });
+                });
+        }
+
+    </script>
+
+</body>
+
+</html>

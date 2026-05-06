@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>DevArena | Dashboard</title>
+    <link rel="stylesheet" href="styles/style.css">
+</head>
+
+<body>
+
+
+<h1>Dashboard DevArena</h1>
+
+<div>
+    <h2 id="totalPartidas">0</h2>
+    <p>Total de partidas</p>
+</div>
+
+<div>
+    <h2 id="melhorWpm">0</h2>
+    <p>Melhor WPM</p>
+</div>
+
+<div>
+    <h2 id="mediaWpm">0</h2>
+    <p>Média WPM</p>
+</div>
+
+<div>
+    <h2 id="mediaPrecisao">0%</h2>
+    <p>Média de precisão</p>
+</div>
+
+<script>
+function atualizarDashboard() {
+    fetch("/resultado/resumo")
+        .then(res => res.json())
+        .then(dados => {
+            totalPartidas.innerHTML = dados.totalPartidas;
+            melhorWpm.innerHTML = dados.melhorWpm || 0;
+            mediaWpm.innerHTML = dados.mediaWpm || 0;
+            mediaPrecisao.innerHTML = (dados.mediaPrecisao || 0) + "%";
+        });
+}
+
+atualizarDashboard();
+setInterval(atualizarDashboard, 3000);
+</script>
+
+</body>
+</html>

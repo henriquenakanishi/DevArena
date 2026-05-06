@@ -10,6 +10,7 @@
   <link rel="icon" href="assets/imgs/Favicon.png" type="image/png">
   <link rel="stylesheet" href="styles/style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
 
 </head>
 
@@ -21,12 +22,36 @@
           <img src="assets/imgs/DevArena.png" alt="DevArena">
         </a>
       </div>
+
       <ul class="menu">
-        <li><a href="index.html">Início</a></li>
-        <li><a href="index.html#historia">Sobre nós</a></li>
-        <li><a href="ranking.html">Ranking</a></li>
+        <li>
+          <a href="index.html" title="Início">
+            <i data-lucide="home"></i>
+          </a>
+        </li>
+
+        <li>
+          <a href="index.html#historia" title="Sobre nós">
+            <i data-lucide="info"></i>
+          </a>
+        </li>
+
+        <li>
+          <a href="ranking.html" title="Ranking">
+            <i data-lucide="crown"></i>
+          </a>
+        </li>
+
+        <li>
+          <a href="arena.html" title="Arena">
+            <i data-lucide="play"></i>
+          </a>
+        </li>
       </ul>
-      <a href="login.html" class="btn-login">Login</a>
+
+      <a href="login.html" class="btn-login">
+        <i data-lucide="user"></i>
+      </a>
     </nav>
   </header>
 
@@ -60,11 +85,9 @@
     <p>© 2026 DevArena • Feito por Henrique Nakanishi</p>
   </footer>
 
-</body>
+  <script>lucide.createIcons();</script>
 
-</html>
-
-<script>
+  <script>
   function validarCadastro() {
     var nome = nome_input.value;
     var email = email_input.value;
@@ -99,4 +122,6 @@
     alert("Cadastro realizado com sucesso Dev 🥷");
     window.location = "./arena.html"
   }
-</script>
+  </script>
+</body>
+</html>

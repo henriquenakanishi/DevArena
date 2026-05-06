@@ -7,6 +7,8 @@ var caminho_env = ambiente_processo === 'producao' ? '.env' : '.env.dev';
 
 require("dotenv").config({ path: caminho_env });
 
+const { Word } = require('@andsfonseca/palavras-pt-br');
+
 var express = require("express");
 var cors = require("cors");
 var path = require("path");
@@ -30,6 +32,20 @@ app.use("/", indexRouter);
 app.use("/usuarios", usuarioRouter);
 app.use("/avisos", avisosRouter);
 app.use("/resultado", resultadoRouter);
+
+app.get("/palavras", (req, res) => {
+
+    let lista = [];
+
+    for(let i = 0; i < 300; i++) {
+
+        lista.push(
+            Word.getRandomWord()
+        );
+    }
+
+    res.json(lista);
+});
 
 app.listen(PORTA_APP, function () {
     console.log(`

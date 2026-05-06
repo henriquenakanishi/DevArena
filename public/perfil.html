@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevArena | Perfil</title>
+
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="icon" href="assets/imgs/Favicon.png" type="image/png">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<header>
+    <nav class="navbar container">
+        <div class="logo">
+            <a href="index.html">
+                <img src="assets/imgs/DevArena.png" alt="DevArena">
+            </a>
+        </div>
+
+        <ul class="menu">
+            <li><a href="index.html" title="Início"><i data-lucide="home"></i></a></li>
+            <li><a href="arena.html" title="Arena"><i data-lucide="play"></i></a></li>
+            <li><a href="ranking.html" title="Ranking"><i data-lucide="crown"></i></a></li>
+            <li><a href="perfil.html" title="Perfil"><i data-lucide="user"></i></a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="perfil container">
+
+    <section class="perfil-header">
+        <h1>Meu Perfil</h1>
+        <p>Acompanhe seu histórico de desempenho na DevArena</p>
+    </section>
+
+    <section class="perfil-cards">
+        <div class="perfil-card">
+            <h3>Melhor WPM</h3>
+            <span id="melhor_wpm">0</span>
+        </div>
+
+        <div class="perfil-card">
+            <h3>Média de WPM</h3>
+            <span id="media_wpm">0</span>
+        </div>
+
+        <div class="perfil-card">
+            <h3>Média de Precisão</h3>
+            <span id="media_precisao">0%</span>
+        </div>
+
+        <div class="perfil-card">
+            <h3>Partidas</h3>
+            <span id="total_partidas">0</span>
+        </div>
+    </section>
+
+    <section class="grafico-perfil">
+        <h2>Evolução de WPM</h2>
+        <canvas id="graficoPerfil"></canvas>
+    </section>
+
+    <section class="historico">
+        <h2>Histórico de Partidas</h2>
+
+        <table class="ranking-table">
+            <thead>
+                <tr>
+                    <th>Partida</th>
+                    <th>WPM</th>
+                    <th>Precisão</th>
+                    <th>Tempo</th>
+                </tr>
+            </thead>
+
+            <tbody id="tbody_historico"></tbody>
+        </table>
+    </section>
+
+</main>
+
+<script>
+    lucide.createIcons();
+</script>
+
+<script src="js/perfil.js"></script>
+
+</body>
+</html>

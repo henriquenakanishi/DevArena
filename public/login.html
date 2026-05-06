@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title> DevArena | Cadastro </title>
+  <title> DevArena | Login </title>
   <link rel="icon" href="assets/imgs/Favicon.png" type="image/png">
   <link rel="stylesheet" href="styles/style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;600;700&display=swap" rel="stylesheet">
@@ -16,39 +16,44 @@
 
 <body>
   <header>
-    <header>
-      <nav class="navbar container">
-        <div class="logo">
-          <a href="index.html">
-            <img src="assets/imgs/DevArena.png" alt="DevArena">
-          </a>
-        </div>
-
-        <ul class="menu">
-          <li>
-            <a href="#" title="Início">
-              <i data-lucide="home"></i>
-            </a>
-          </li>
-
-          <li>
-            <a href="#historia" title="Sobre nós">
-              <i data-lucide="info"></i>
-            </a>
-          </li>
-
-          <li>
-            <a href="ranking.html" title="Ranking">
-              <i data-lucide="crown"></i>
-            </a>
-          </li>
-        </ul>
-
-        <a href="cadastro.html" class="btn-cadastro">
-          <i data-lucide="user"></i>
+    <nav class="navbar container">
+      <div class="logo">
+        <a href="index.html">
+          <img src="assets/imgs/DevArena.png" alt="DevArena">
         </a>
-      </nav>
-    </header>
+      </div>
+
+      <ul class="menu">
+        <li>
+          <a href="index.html" title="Início">
+            <i data-lucide="home"></i>
+          </a>
+        </li>
+
+        <li>
+          <a href="index.html#historia" title="Sobre nós">
+            <i data-lucide="info"></i>
+          </a>
+        </li>
+
+        <li>
+          <a href="ranking.html" title="Ranking">
+            <i data-lucide="crown"></i>
+          </a>
+        </li>
+
+        <li>
+          <a href="arena.html" title="Arena">
+            <i data-lucide="play"></i>
+          </a>
+        </li>
+      </ul>
+
+      <a href="cadastro.html" class="btn-cadastro">
+        <i data-lucide="user-plus"></i>
+      </a>
+    </nav>
+  </header>
 
 
     <div class="login">
@@ -59,13 +64,13 @@
           <div class="formulario">
             <div class="field">
               <span>Email:</span>
-              <input id="nome_input" type="text" placeholder="seuemail@provedor.com" />
+              <input id="nome_input" type="text" placeholder="email@provedor.com" />
             </div>
             <div class="field">
               <span>Senha:</span>
               <input id="senha_input" type="password" placeholder="******" />
             </div>
-            <button class="botaoLogin">Login</button>
+            <button class="btn">Login</button>
           </div>
         </div>
       </div>
@@ -80,11 +85,7 @@
       lucide.createIcons();
     </script>
 
-</body>
-
-</html>
-
-<script>
+  <script>
   function validarLogin() {
     var email = nome_input.value;
     var senha = senha_input.value;
@@ -107,4 +108,6 @@
     alert("Login realizado com sucesso!");
     window.location = "./arena.html"
   }
-</script>
+  </script>
+</body>
+</html>

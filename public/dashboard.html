@@ -1,96 +1,103 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevArena | Dashboard</title>
-    <link rel="stylesheet" href="styles/style.css">
-    <link rel="icon" href="assets/imgs/Favicon.png" type="image/png">
-    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;600;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
-</head>
+    <!DOCTYPE html>
+    <html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>DevArena | Dashboard</title>
+        <link rel="stylesheet" href="styles/style.css">
+        <link rel="icon" href="assets/imgs/Favicon.png" type="image/png">
+        <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+        
+    </head>
 
-<body>
+    <body>
 
-    <header>
-        <nav class="navbar container">
-            <div class="logo">
-                <a href="index.html">
-                    <img src="assets/imgs/DevArena.png" alt="DevArena">
+        <header>
+            <nav class="navbar container">
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="assets/imgs/DevArena.png" alt="DevArena">
+                    </a>
+                </div>
+
+                <ul class="menu">
+                    <li>
+                        <a href="index.html" title="Início">
+                            <i data-lucide="home"></i>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="index.html#historia" title="Sobre nós">
+                            <i data-lucide="info"></i>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="ranking.html" title="Ranking">
+                            <i data-lucide="crown"></i>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="arena.html" title="Arena">
+                            <i data-lucide="play"></i>
+                        </a>
+                    </li>
+                </ul>
+
+                <a href="login.html" class="btn-cadastro">
+                    <i data-lucide="user"></i>
                 </a>
-            </div>
+            </nav>
+        </header>
 
-            <ul class="menu">
-                <li>
-                    <a href="index.html" title="Início">
-                        <i data-lucide="home"></i>
-                    </a>
-                </li>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        lucide.createIcons();
+    </script>
 
-                <li>
-                    <a href="index.html#historia" title="Sobre nós">
-                        <i data-lucide="info"></i>
-                    </a>
-                </li>
+    <h1>Dashboard DevArena</h1>
 
-                <li>
-                    <a href="ranking.html" title="Ranking">
-                        <i data-lucide="crown"></i>
-                    </a>
-                </li>
+    <div>
+        <h2 id="totalPartidas">0</h2>
+        <p>Total de partidas</p>
+    </div>
 
-                <li>
-                    <a href="arena.html" title="Arena">
-                        <i data-lucide="play"></i>
-                    </a>
-                </li>
-            </ul>
+    <div>
+        <h2 id="melhorWpm">0</h2>
+        <p>Melhor WPM</p>
+    </div>
 
-            <a href="login.html" class="btn-cadastro">
-                <i data-lucide="user"></i>
-            </a>
-        </nav>
-    </header>
+    <div>
+        <h2 id="mediaWpm">0</h2>
+        <p>Média WPM</p>
+    </div>
 
-    <script>lucide.createIcons();</script>
+    <div>
+        <h2 id="mediaPrecisao">0%</h2>
+        <p>Média de precisão</p>
+    </div>
 
-<h1>Dashboard DevArena</h1>
+    <script>
+    function atualizarDashboard() {
+        fetch("http://localhost:8080/resultado/resumo")
+            .then(res => res.json())
+            .then(dados => {
+                totalPartidas.innerHTML = dados.totalPartidas || 0;
+                melhorWpm.innerHTML = dados.melhorWpm || 0;
+                mediaWpm.innerHTML = dados.mediaWpm || 0;
+                mediaPrecisao.innerHTML = (dados.mediaPrecisao || 0) + "%";
+            })
+            .catch(erro => {
+                console.log("Erro ao carregar dashboard:", erro);
+            });
+    }
 
-<div>
-    <h2 id="totalPartidas">0</h2>
-    <p>Total de partidas</p>
-</div>
+    atualizarDashboard();
+    setInterval(atualizarDashboard, 3000);
+    </script>
 
-<div>
-    <h2 id="melhorWpm">0</h2>
-    <p>Melhor WPM</p>
-</div>
-
-<div>
-    <h2 id="mediaWpm">0</h2>
-    <p>Média WPM</p>
-</div>
-
-<div>
-    <h2 id="mediaPrecisao">0%</h2>
-    <p>Média de precisão</p>
-</div>
-
-<script>
-function atualizarDashboard() {
-    fetch("/resultado/resumo")
-        .then(res => res.json())
-        .then(dados => {
-            totalPartidas.innerHTML = dados.totalPartidas;
-            melhorWpm.innerHTML = dados.melhorWpm || 0;
-            mediaWpm.innerHTML = dados.mediaWpm || 0;
-            mediaPrecisao.innerHTML = (dados.mediaPrecisao || 0) + "%";
-        });
-}
-
-atualizarDashboard();
-setInterval(atualizarDashboard, 3000);
-</script>
-
-</body>
-</html>
+    </body>
+    </html>

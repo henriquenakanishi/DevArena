@@ -11,48 +11,47 @@
   <link rel="stylesheet" href="styles/style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;600;700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 </head>
 
 <body>
   <header>
-    <nav class="navbar container">
-      <div class="logo">
-        <a href="index.html">
-          <img src="assets/imgs/DevArena.png" alt="DevArena">
+  <nav class="navbar">
+
+    <div class="nav-left">
+
+        <a href="index.html" class="logo">
+            <img src="assets/imgs/DevArenaNavbar.png" alt="DevArena">
         </a>
-      </div>
 
-      <ul class="menu">
-        <li>
-          <a href="index.html" title="Início">
-            <i data-lucide="home"></i>
-          </a>
-        </li>
+        <ul class="menu">
+            <li>
+                <a href="#" title="Início">
+                    <i data-lucide="house"></i>
+                </a>
+            </li>
 
-        <li>
-          <a href="index.html#historia" title="Sobre nós">
-            <i data-lucide="info"></i>
-          </a>
-        </li>
+            <li>
+                <a href="historia.html" title="Sobre">
+                    <i data-lucide="info"></i>
+                </a>
+            </li>
 
-        <li>
-          <a href="ranking.html" title="Ranking">
-            <i data-lucide="crown"></i>
-          </a>
-        </li>
+            <li>
+                <a href="ranking.html" title="Ranking">
+                    <i data-lucide="crown"></i>
+                </a>
+            </li>
+        </ul>
 
-        <li>
-          <a href="arena.html" title="Arena">
-            <i data-lucide="play"></i>
-          </a>
-        </li>
-      </ul>
+    </div>
 
-      <a href="cadastro.html" class="btn-cadastro">
+    <a href="login.html" class="perfil-btn" title="Perfil">
         <i data-lucide="user-plus"></i>
-      </a>
-    </nav>
+    </a>
+
+</nav>
   </header>
 
 
@@ -60,25 +59,31 @@
 
       <div class="auth">
         <div class="auth-content">
-          <h2>Bem-vindo de volta Dev 🥷 </h2> <br>
+          <h2>Bem-vindo de volta a <span> DevArena! </span> </h2> <br>
           <div class="formulario">
             <div class="field">
-              <span>Email:</span>
+             E-mail:
               <input id="nome_input" type="text" placeholder="email@provedor.com" />
             </div>
             <div class="field">
-              <span>Senha:</span>
+              Senha:
               <input id="senha_input" type="password" placeholder="******" />
             </div>
-            <button class="btn">Login</button>
+            <button class="btn" onclick="validarLogin()">Login</button>
           </div>
         </div>
       </div>
     </div>
 
-    <!--footer inicio-->
+    <!-- FOOTER COM ÍCONES -->
     <footer class="footer">
-      <p>© 2026 DevArena • Feito por Henrique Nakanishi</p>
+        <div class="footer-icons">
+            <a href="#"><i class="fa-brands fa-github"></i></a>
+            <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+            <a href="#"><i class="fa-solid fa-envelope"></i></a>
+        </div>
+
+        <p>© 2026 DevArena • Feito por Henrique Nakanishi</p>
     </footer>
 
     <script>

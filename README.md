@@ -5,10 +5,6 @@
 <h1 align="center">DevArena</h1>
 
 <p align="center">
-  Plataforma web interativa voltada para treino de digitação, análise de desempenho e evolução do usuário em tempo real.
-</p>
-
-<p align="center">
   Projeto individual desenvolvido para disciplinas da SPTech.
 </p>
 
@@ -35,40 +31,6 @@ A aplicação permite que usuários acompanhem sua evolução através de métri
 
 ---
 
-## Tecnologias Utilizadas
-
-<div align="center">
-
-| Front-End | Back-End | Banco de Dados | Bibliotecas |
-|------------|------------|----------------|--------------|
-| HTML5 | Node.js | MySQL | Chart.js |
-| CSS3 | Express | SQL | Web Data Viz |
-| JavaScript | JavaScript |  |  |
-
-</div>
-
----
-
-## Estrutura do Projeto
-
-```bash
-DevArena/
-│
-├── public/
-│   ├── assets/
-│   ├── css/
-│   ├── js/
-│   └── pages/
-│
-├── src/
-├── database/
-├── app.js
-├── package.json
-└── README.md
-```
-
----
-
 ## Dashboard e Métricas
 
 A plataforma possui dashboards desenvolvidas para análise de desempenho do usuário, permitindo visualização de métricas como:
@@ -78,20 +40,6 @@ A plataforma possui dashboards desenvolvidas para análise de desempenho do usu�
 - Histórico de partidas
 - Estatísticas gerais
 - Comparativo de desempenho
-
----
-
-## Objetivo
-
-O projeto tem como foco aplicar conceitos de:
-
-- desenvolvimento web
-- experiência do usuário
-- análise de dados
-- interatividade
-- gamificação
-
-através de uma aplicação moderna e funcional.
 
 ---
 

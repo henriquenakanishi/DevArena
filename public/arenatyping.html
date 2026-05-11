@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevArena | Arena</title>
+
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="icon" href="assets/imgs/Favicon.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+    <header>
+        <nav class="navbar">
+
+            <div class="nav-left">
+
+                <a href="index.html" class="logo">
+                    <img src="assets/imgs/DevArenaNavbar.png" alt="DevArena">
+                </a>
+
+                <ul class="menu">
+                    <li>
+                        <a href="#" title="Início">
+                            <i data-lucide="house"></i>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="historia.html" title="Sobre">
+                            <i data-lucide="info"></i>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="ranking.html" title="Ranking">
+                            <i data-lucide="crown"></i>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="arena.html" title="Arena">
+                            <i data-lucide="play"></i>
+                        </a>
+                    </li>
+                </ul>
+
+            </div>
+            <div class="nav-right">
+                <div class="perfil-menu">
+                    <button class="perfil-btn" onclick="abrirMenuPerfil()">
+                        <i data-lucide="user"></i>
+                    </button>
+
+                    <div class="perfil-dropdown" id="perfilDropdown">
+                        <p>Olá, <span id="nomeUsuario">Dev</span></p>
+
+                        <a href="index.html">Home</a>
+                        <a href="perfil.html">Perfil</a>
+                        <a href="cps.html">CPS</a>
+                        <a href="arena.html">Arena</a>
+                        <a href="login.html" onclick="sair()">Sair</a>
+                    </div>
+                </div>
+            </div>
+
+        </nav>
+    </header>
+
+    <main class="arena container">
+
+        <h1>Arena de Digitação</h1>
+
+        <div class="stats">Tempo Restante: <span id="time">30s</span></div>
+
+        <div class="word-container" id="wordContainer"></div>
+
+        <textarea id="input" disabled placeholder="Comece a digitar..."></textarea>
+
+        <div class="controls">
+            <button class="btn" onclick="iniciarJogo()">Iniciar treino</button>
+        </div>
+
+        <div id="overlay" style="display: none;"></div>
+        <div id="card_resultado" style="display: none;">
+            <h2>Resultado da Partida</h2>
+
+            <p>WPM: <span id="wpm_final"></span></p>
+            <p>Precisão: <span id="precisao_final"></span>%</p>
+            <p>Tempo: <span id="tempo_final"></span>s</p>
+            <p id="mensagem_recorde"></p>
+
+            <canvas id="graficoWpm"></canvas>
+
+            <button class="btn-restart" onclick="location.reload()">
+                Jogar novamente
+            </button>
+            <button class="btn-stats" onclick="window.location.href='perfil.html'">
+                Ver minhas estastísticas
+            </button>
+        </div>
+
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/arena.js"></script>
+    <script>
+    function abrirMenuPerfil() {
+        var menu = document.getElementById("perfilDropdown");
+
+        if (menu.style.display == "flex") {
+            menu.style.display = "none";
+        } else {
+            menu.style.display = "flex";
+        }
+    }
+
+    if (sessionStorage.NOME_USUARIO != undefined) {
+        nomeUsuario.innerHTML = sessionStorage.NOME_USUARIO;
+    }
+
+    function sair() {
+        sessionStorage.clear();
+    }
+
+    lucide.createIcons();
+    
+        if (sessionStorage.ID_USUARIO != undefined) {
+            document.getElementById("btnCadastro").style.display = "none";
+            document.getElementById("btnPerfil").style.display = "flex";
+        } else {
+            document.getElementById("btnCadastro").style.display = "flex";
+            document.getElementById("btnPerfil").style.display = "none";
+        }
+
+        lucide.createIcons();
+    </script>
+</body>
+
+
+
+</html>

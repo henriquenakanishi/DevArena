@@ -8,16 +8,24 @@
 
     <link rel="stylesheet" href="styles/style.css">
     <link rel="icon" href="assets/imgs/Favicon.png" type="image/png">
-    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;600;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
+    <!-- Fonte -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Ícones -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 
 <body>
 
+    <!-- NAVBAR -->
+
     <header>
+
         <nav class="navbar">
 
             <div class="nav-left">
@@ -27,8 +35,9 @@
                 </a>
 
                 <ul class="menu">
+
                     <li>
-                        <a href="#" title="Início">
+                        <a href="index.html" title="Início">
                             <i data-lucide="house"></i>
                         </a>
                     </li>
@@ -44,54 +53,126 @@
                             <i data-lucide="crown"></i>
                         </a>
                     </li>
+
                 </ul>
 
             </div>
 
-            <a href="cadastro.html" class="perfil-btn" title="Perfil">
-                <i data-lucide="user"></i>
-            </a>
+            <div class="nav-right">
+
+                <div class="perfil-menu">
+
+                    <button class="perfil-btn" onclick="abrirMenuPerfil()">
+                        <i data-lucide="user"></i>
+                    </button>
+
+                    <div class="perfil-dropdown" id="perfilDropdown">
+
+                        <p>
+                            Olá,
+                            <span id="nomeUsuario">Dev</span>
+                        </p>
+
+                        <a href="index.html">Home</a>
+                        <a href="arena.html">Arena</a>
+                        <a href="perfil.html">Perfil</a>
+                        <a href="ranking.html">Ranking</a>
+
+                        <a href="login.html" onclick="sair()">
+                            Sair
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
 
         </nav>
+
     </header>
 
-    <script>lucide.createIcons();</script>
+    <!-- MAIN -->
 
-    <main class="arena container">
+    <main class="arena-hub container">
 
-        <h1>Arena de Digitação</h1>
+        <h1>
+            Escolha sua <span>Arena</span>
+        </h1>
 
-        <div class="stats">⏱️ Tempo: <span id="time">30</span>s</div>
+        <section class="modes">
 
-        <div class="word-container" id="wordContainer"></div>
+            <a href="arenatyping.html" class="mode-card">
 
-        <textarea id="input" disabled placeholder="Comece a digitar..."></textarea>
+                <i data-lucide="keyboard"></i>
 
-        <div class="controls">
-            <button class="btn" onclick="iniciarJogo()">Iniciar treino</button>
-        </div>
+                <h2>Arena Typing</h2>
 
-        <div id="overlay" style="display: none;"></div>
-        <div id="card_resultado" style="display: none;">
-            <h2>Resultado da Partida</h2>
+                <p>
+                    Treine velocidade, precisão e consistência na digitação.
+                </p>
 
-            <p>WPM: <span id="wpm_final"></span></p>
-            <p>Precisão: <span id="precisao_final"></span>%</p>
-            <p>Tempo: <span id="tempo_final"></span>s</p>
-            <p id="mensagem_recorde"></p>
+            </a>
 
-            <canvas id="graficoWpm"></canvas>
+            <a href="arenacps.html" class="mode-card">
 
-            <button class="btn-restart" onclick="location.reload()">
-                Jogar novamente
-            </button>
-        </div>
+                <i data-lucide="mouse-pointer-click"></i>
+
+                <h2>Arena CPS</h2>
+
+                <p>
+                    Teste seus reflexos e descubra seus cliques por segundo.
+                </p>
+
+            </a>
+
+        </section>
 
     </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- FOOTER -->
 
-    <script src="js/arena.js"></script>
+    <footer class="footer">
+
+        <div class="footer-icons">
+            <a href="#"><i class="fa-brands fa-github"></i></a>
+            <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+            <a href="#"><i class="fa-solid fa-envelope"></i></a>
+        </div>
+
+        <p>
+            © 2026 DevArena • Feito por Henrique Nakanishi
+        </p>
+
+    </footer>
+
+    <!-- SCRIPT -->
+
+    <script>
+
+        function abrirMenuPerfil() {
+
+            var menu = document.getElementById("perfilDropdown");
+
+            if (menu.style.display == "flex") {
+                menu.style.display = "none";
+            } else {
+                menu.style.display = "flex";
+            }
+
+        }
+
+        if (sessionStorage.NOME_USUARIO != undefined) {
+            nomeUsuario.innerHTML = sessionStorage.NOME_USUARIO;
+        }
+
+        function sair() {
+            sessionStorage.clear();
+        }
+
+        lucide.createIcons();
+
+    </script>
 
 </body>
 

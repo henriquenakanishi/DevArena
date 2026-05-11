@@ -9,6 +9,7 @@
   <title> DevArena | Cadastro </title>
   <link rel="icon" href="assets/imgs/Favicon.png" type="image/png">
   <link rel="stylesheet" href="styles/style.css" />
+
   <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -19,39 +20,34 @@
   <header>
     <nav class="navbar">
 
-    <div class="nav-left">
+      <div class="nav-left">
 
         <a href="index.html" class="logo">
-            <img src="assets/imgs/DevArenaNavbar.png" alt="DevArena">
+          <img src="assets/imgs/DevArenaNavbar.png" alt="DevArena">
         </a>
 
         <ul class="menu">
-            <li>
-                <a href="#" title="Início">
-                    <i data-lucide="house"></i>
-                </a>
-            </li>
+          <li>
+            <a href="index.html" title="Início">
+              <i data-lucide="house"></i>
+            </a>
+          </li>
 
-            <li>
-                <a href="historia.html" title="Sobre">
-                    <i data-lucide="info"></i>
-                </a>
-            </li>
+          <li>
+            <a href="historia.html" title="Sobre">
+              <i data-lucide="info"></i>
+            </a>
+          </li>
 
-            <li>
-                <a href="ranking.html" title="Ranking">
-                    <i data-lucide="crown"></i>
-                </a>
-            </li>
+          <li>
+            <a href="ranking.html" title="Ranking">
+              <i data-lucide="crown"></i>
+            </a>
+          </li>
         </ul>
 
-    </div>
-
-    <a href="login.html" class="perfil-btn" title="Perfil">
-        <i data-lucide="user-check"></i>
-    </a>
-
-</nav>
+      </div>
+    </nav>
   </header>
 
   <div class="auth">
@@ -71,10 +67,15 @@
           <input id="senha_input" type="password" placeholder="******" />
         </div>
         <div class="field">
-         Confirmação da Senha:
+          Confirmação da Senha:
           <input id="confirmacao_senha_input" type="password" placeholder="******" />
         </div>
+        <p class="redirect-login">
+          Já tem uma conta?
+          <a href="login.html"><span>Faça login</span></a>
+        </p>
         <button class="botao" onclick="validarCadastro()">Cadastrar</button>
+
       </div>
     </div>
   </div>
@@ -83,9 +84,9 @@
   <!-- FOOTER COM ÍCONES -->
   <footer class="footer">
     <div class="footer-icons">
-      <a href="#"><i class="fa-brands fa-github"></i></a>
-      <a href="#"><i class="fa-brands fa-linkedin"></i></a>
-      <a href="#"><i class="fa-solid fa-envelope"></i></a>
+      <a href="https://github.com/henriquenakanishi/DevArena" target="_blank"> <i class="fa-brands fa-github"></i></a>
+      <a href="https://www.linkedin.com/in/hpnakanishi/" target="_blank"> <i class="fa-brands fa-linkedin"></i></a>
+      <a href="mailto:contato@devarena.com"> <i class="fa-solid fa-envelope"></i></a>
     </div>
 
     <p>© 2026 DevArena • Feito por Henrique Nakanishi</p>
@@ -100,12 +101,7 @@
       var senha = senha_input.value;
       var confirmacao = confirmacao_senha_input.value;
 
-      if (
-        nome == "" ||
-        email == "" ||
-        senha == "" ||
-        confirmacao == ""
-      ) {
+      if (nome == "" || email == "" || senha == "" || confirmacao == "") {
         alert("Preencha todos os campos!");
         return;
       }
@@ -125,8 +121,32 @@
         return;
       }
 
-      alert("Cadastro realizado com sucesso Dev 🥷");
-      window.location = "./arena.html"
+      fetch("/usuarios/cadastrar", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          nomeServer: nome,
+          emailServer: email,
+          senhaServer: senha
+        })
+      })
+        .then(function (resposta) {
+          if (resposta.ok) {
+            alert("Cadastro realizado com sucesso Dev 🥷");
+            window.location = "login.html";
+          } else {
+            resposta.text().then(function (texto) {
+              console.log(texto);
+              alert("Erro ao cadastrar: " + texto);
+            });
+          }
+        })
+        .catch(function (erro) {
+          console.log(erro);
+          alert("Erro ao conectar com o servidor.");
+        });
     }
   </script>
 </body>

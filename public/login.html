@@ -17,102 +17,120 @@
 
 <body>
   <header>
-  <nav class="navbar">
+    <nav class="navbar">
 
-    <div class="nav-left">
+      <div class="nav-left">
 
         <a href="index.html" class="logo">
-            <img src="assets/imgs/DevArenaNavbar.png" alt="DevArena">
+          <img src="assets/imgs/DevArenaNavbar.png" alt="DevArena">
         </a>
 
         <ul class="menu">
-            <li>
-                <a href="#" title="Início">
-                    <i data-lucide="house"></i>
-                </a>
-            </li>
+          <li>
+            <a href="#" title="Início">
+              <i data-lucide="house"></i>
+            </a>
+          </li>
 
-            <li>
-                <a href="historia.html" title="Sobre">
-                    <i data-lucide="info"></i>
-                </a>
-            </li>
+          <li>
+            <a href="historia.html" title="Sobre">
+              <i data-lucide="info"></i>
+            </a>
+          </li>
 
-            <li>
-                <a href="ranking.html" title="Ranking">
-                    <i data-lucide="crown"></i>
-                </a>
-            </li>
+          <li>
+            <a href="ranking.html" title="Ranking">
+              <i data-lucide="crown"></i>
+            </a>
+          </li>
         </ul>
+      </div>
 
-    </div>
-
-    <a href="login.html" class="perfil-btn" title="Perfil">
-        <i data-lucide="user-plus"></i>
-    </a>
-
-</nav>
+    </nav>
   </header>
 
 
-    <div class="login">
+  <div class="login">
 
-      <div class="auth">
-        <div class="auth-content">
-          <h2>Bem-vindo de volta a <span> DevArena! </span> </h2> <br>
-          <div class="formulario">
-            <div class="field">
-             E-mail:
-              <input id="nome_input" type="text" placeholder="email@provedor.com" />
-            </div>
-            <div class="field">
-              Senha:
-              <input id="senha_input" type="password" placeholder="******" />
-            </div>
-            <button class="btn" onclick="validarLogin()">Login</button>
+    <div class="auth">
+      <div class="auth-content">
+        <h2>Bem-vindo de volta a <span> DevArena! </span> </h2> <br>
+        <div class="formulario">
+          <div class="field">
+            E-mail:
+            <input id="email_input" type="text" placeholder="email@provedor.com" />
           </div>
+          <div class="field">
+            Senha:
+            <input id="senha_input" type="password" placeholder="******" />
+          </div>
+
+          <p class="redirect-login">
+            Ainda não tem uma conta?
+            <a href="cadastro.html"><span>Cadastre-se</span></a>
+          </p>
+          <br> 
+          <button class="btn" onclick="validarLogin()">Login</button>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- FOOTER COM ÍCONES -->
-    <footer class="footer">
-        <div class="footer-icons">
-            <a href="#"><i class="fa-brands fa-github"></i></a>
-            <a href="#"><i class="fa-brands fa-linkedin"></i></a>
-            <a href="#"><i class="fa-solid fa-envelope"></i></a>
-        </div>
+  <!-- FOOTER COM ÍCONES -->
+  <footer class="footer">
+    <div class="footer-icons">
+      <a href="#"><i class="fa-brands fa-github"></i></a>
+      <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+      <a href="#"><i class="fa-solid fa-envelope"></i></a>
+    </div>
 
-        <p>© 2026 DevArena • Feito por Henrique Nakanishi</p>
-    </footer>
-
-    <script>
-      lucide.createIcons();
-    </script>
+    <p>© 2026 DevArena • Feito por Henrique Nakanishi</p>
+  </footer>
 
   <script>
-  function validarLogin() {
-    var email = nome_input.value;
-    var senha = senha_input.value;
+    lucide.createIcons();
+  </script>
 
-    if (email == "" || senha == "") {
-      alert("Preencha todos os campos!");
-      return;
+  <script>
+    function validarLogin() {
+      var email = email_input.value;
+      var senha = senha_input.value;
+
+      if (email == "" || senha == "") {
+        alert("Preencha todos os campos!");
+        return;
+      }
+
+      fetch("/usuarios/autenticar", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          emailServer: email,
+          senhaServer: senha
+        })
+      })
+        .then(function (resposta) {
+          if (resposta.ok) {
+            resposta.json().then(function (json) {
+              sessionStorage.ID_USUARIO = json.idUsuario;
+              sessionStorage.NOME_USUARIO = json.nome;
+              sessionStorage.EMAIL_USUARIO = json.email;
+
+              alert("Login realizado com sucesso!");
+              window.location = "arena.html";
+            });
+          } else {
+            alert("E-mail ou senha inválidos!");
+          }
+        })
+        .catch(function (erro) {
+          console.log(erro);
+          alert("Erro ao conectar com o servidor.");
+        });
     }
-
-    if (!email.includes("@") || !email.includes(".")) {
-      alert("Digite um e-mail válido!");
-      return;
-    }
-
-    if (senha.length < 6) {
-      alert("A senha deve ter pelo menos 6 caracteres!");
-      return;
-    }
-
-    alert("Login realizado com sucesso!");
-    window.location = "./arena.html"
-  }
   </script>
 </body>
+
 </html>

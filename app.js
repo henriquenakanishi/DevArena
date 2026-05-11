@@ -7,7 +7,7 @@ var caminho_env = ambiente_processo === 'producao' ? '.env' : '.env.dev';
 
 require("dotenv").config({ path: caminho_env });
 
-const { Word } = require('@andsfonseca/palavras-pt-br');
+// const { Word } = require('@andsfonseca/palavras-pt-br');
 
 var express = require("express");
 var cors = require("cors");
@@ -19,8 +19,8 @@ var app = express();
 
 var indexRouter = require("./src/routes/index");
 var usuarioRouter = require("./src/routes/usuarios");
-var avisosRouter = require("./src/routes/avisos");
 var resultadoRouter = require("./src/routes/resultadoRouter");
+var resultadoCpsRouter = require("./src/routes/resultadoCpsRouter");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -30,8 +30,8 @@ app.use(cors());
 
 app.use("/", indexRouter);
 app.use("/usuarios", usuarioRouter);
-app.use("/avisos", avisosRouter);
 app.use("/resultado", resultadoRouter);
+app.use("/resultadoCps", resultadoCpsRouter);
 
 app.get("/palavras", (req, res) => {
 

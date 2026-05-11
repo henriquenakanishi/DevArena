@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevArena | CPS Test</title>
+
+    <link rel="icon" href="assets/imgs/Favicon.png" type="image/png">
+
+    <!-- Fonte -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Ícones -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="styles/style.css">
+</head>
+
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <header>
+        <nav class="navbar">
+
+            <div class="nav-left">
+
+                <a href="index.html" class="logo">
+                    <img src="assets/imgs/DevArenaNavbar.png" alt="DevArena">
+                </a>
+
+                <ul class="menu">
+                    <li>
+                        <a href="#" title="Início">
+                            <i data-lucide="house"></i>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="historia.html" title="Sobre">
+                            <i data-lucide="info"></i>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="ranking.html" title="Ranking">
+                            <i data-lucide="crown"></i>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="arena.html" title="Arena">
+                            <i data-lucide="play"></i>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="nav-right">
+
+                    <div class="perfil-menu">
+
+                        <button class="perfil-btn" onclick="abrirMenuPerfil()">
+                            <i data-lucide="user"></i>
+                        </button>
+
+                        <div class="perfil-dropdown" id="perfilDropdown">
+
+                            <p>
+                                Olá,
+                                <span id="nomeUsuario">Dev</span>
+                            </p>
+
+                            <a href="index.html">Home</a>
+                            <a href="arena.html">Arena</a>
+                            <a href="perfil.html">Perfil</a>
+                            <a href="ranking.html">Ranking</a>
+
+                            <a href="login.html" onclick="sair()">
+                                Sair
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+        </nav>
+
+        </nav>
+    </header>
+
+    <!-- HERO -->
+
+    <section class="hero-cps">
+
+        <h1>
+            Teste seu <span>CPS</span>
+        </h1>
+
+        <p>
+            Descubra quantos cliques por segundo você consegue fazer.
+        </p>
+
+        <!-- CARD -->
+
+        <div class="cps-card">
+
+            <div class="infos">
+
+                <div class="info-box">
+                    <h2 id="tempo">15</h2>
+                    <span>Tempo</span>
+                </div>
+
+                <div class="info-box">
+                    <h2 id="cliques">0</h2>
+                    <span>Cliques</span>
+                </div>
+
+                <div class="info-box">
+                    <h2 id="cps">0</h2>
+                    <span>CPS</span>
+                </div>
+
+            </div>
+
+            <button id="btnClique" onclick="contarClique()">
+                Clique Aqui
+            </button>
+
+            <button class="btn-reset" onclick="reiniciarCPS()">
+                Reiniciar
+            </button>
+
+        </div>
+
+    </section>
+
+    <script>
+        lucide.createIcons();
+    </script>
+
+    <script src="js/cps.js"></script>
+
+</body>
+
+</html>
+
+<script src="js/cps.js"></script>

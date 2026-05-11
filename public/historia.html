@@ -22,41 +22,53 @@
 
 <body>
 
-    <nav class="navbar">
+          <nav class="navbar">
 
-        <div class="nav-left">
+            <div class="nav-left">
 
-            <a href="index.html" class="logo">
-                <img src="assets/imgs/DevArenaNavbar.png" alt="DevArena">
-            </a>
+                <a href="index.html" class="logo">
+                    <img src="assets/imgs/DevArenaNavbar.png" alt="DevArena">
+                </a>
 
-            <ul class="menu">
-                <li>
-                    <a href="index.html" title="Início">
-                        <i data-lucide="house"></i>
-                    </a>
-                </li>
+                <ul class="menu">
+                    <li>
+                        <a href="index.html" title="Início">
+                            <i data-lucide="house"></i>
+                        </a>
+                    </li>
 
-                <li>
-                    <a href="#historia" title="Sobre">
-                        <i data-lucide="info"></i>
-                    </a>
-                </li>
+                    <li>
+                        <a href="historia.html" title="Sobre">
+                            <i data-lucide="info"></i>
+                        </a>
+                    </li>
 
-                <li>
-                    <a href="ranking.html" title="Ranking">
-                        <i data-lucide="crown"></i>
-                    </a>
-                </li>
-            </ul>
+                    <li>
+                        <a href="ranking.html" title="Ranking">
+                            <i data-lucide="crown"></i>
+                        </a>
+                    </li>
 
-        </div>
+            </div>
+            <div class="nav-right">
+                <div class="perfil-menu">
+                    <button class="perfil-btn" onclick="abrirMenuPerfil()">
+                        <i data-lucide="user"></i>
+                    </button>
 
-        <a href="cadastro.html" class="perfil-btn" title="Perfil">
-            <i data-lucide="user"></i>
-        </a>
+                    <div class="perfil-dropdown" id="perfilDropdown">
+                        <p>Olá, <span id="nomeUsuario">Dev</span></p>
 
-    </nav>
+                        <a href="index.html">Home</a>
+                        <a href="perfil.html">Perfil</a>
+                        <a href="cps.html">CPS</a>
+                        <a href="arena.html">Arena</a>
+                        <a href="login.html" onclick="sair()">Sair</a>
+                    </div>
+                </div>
+            </div>
+
+        </nav>
 
   <section id="historia" class="history container">
             <h2>Minha história com a digitação</h2>

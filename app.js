@@ -33,20 +33,6 @@ app.use("/usuarios", usuarioRouter);
 app.use("/resultado", resultadoRouter);
 app.use("/resultadoCps", resultadoCpsRouter);
 
-app.get("/palavras", (req, res) => {
-
-    let lista = [];
-
-    for(let i = 0; i < 300; i++) {
-
-        lista.push(
-            Word.getRandomWord()
-        );
-    }
-
-    res.json(lista);
-});
-
 app.listen(PORTA_APP, function () {
     console.log(`
     ##   ##  ######   #####             ####       ##     ######     ##              ##  ##    ####    ######  

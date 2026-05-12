@@ -1,264 +1,166 @@
+let palavrasBase = [
+    "universidade", "javascript", "desenvolvimento", "arena", "digitação",
+    "teste", "resultado", "precisão", "velocidade", "prática",
+    "computador", "teclado", "monitor", "mouse", "código",
+    "software", "hardware", "internet", "servidor", "cliente",
+    "banco", "dados", "segurança", "performance", "algoritmo",
+    "função", "variável", "array", "string", "console",
+    "frontend", "backend", "devarena", "ranking", "dashboard",
+    "wpm", "cpm", "tempo", "jogo", "aprendizado",
+    "foco", "disciplina", "motivação", "tecnologia", "futuro"
+];
 
-// =========================
-// BANCO DE PALAVRAS
-// =========================
+let palavrasDoJogo = [];
+let palavraAtual = 0;
+let tempo = 30;
+let intervalo = null;
 
-let palavrasBase = [];
+let acertos = 0;
+let erros = 0;
+let totalDigitadas = 0;
 let jogoFinalizado = false;
 
-// =========================
-// ESTADO DO JOGO
-// =========================
+let container = document.getElementById("wordContainer");
+let input = document.getElementById("input");
+let timer = document.getElementById("time");
 
-let estado = {
-    linhas: [],
-    linhaAtual: 0,
-    palavraAtual: 0,
-    tempo: 30,
-    intervalo: null,
-    acertos: 0,
-    erros: 0,
-    totalDigitadas: 0
-};
+function sortearPalavras() {
+    palavrasDoJogo = [];
 
-// =========================
-// ELEMENTOS
-// =========================
-
-const container = document.getElementById("wordContainer");
-const input = document.getElementById("input");
-const timer = document.getElementById("time");
-
-// =========================
-// BUSCAR PALAVRAS DO BACKEND
-// =========================
-
-async function carregarPalavras() {
-    try {
-        const resposta = await fetch("/palavras");
-
-        palavrasBase = await resposta.json();
-
-        console.log("Palavras carregadas:", palavrasBase);
-    } catch (erro) {
-        console.log("Erro ao carregar palavras:", erro);
+    for (let i = 0; i < 100; i++) {
+        let numero = Math.floor(Math.random() * palavrasBase.length);
+        palavrasDoJogo.push(palavrasBase[numero]);
     }
 }
 
-// =========================
-// GERAR PALAVRAS
-// =========================
-
-function gerarPalavras(qtdLinhas = 20, qtdPorLinha = 10) {
-    return Array.from({ length: qtdLinhas }, () =>
-        Array.from({ length: qtdPorLinha }, () =>
-            palavrasBase[Math.floor(Math.random() * palavrasBase.length)]
-        )
-    );
-}
-
-// =========================
-// RENDERIZAR LINHA
-// =========================
-
-function renderizarLinha() {
+function mostrarPalavras() {
     container.innerHTML = "";
 
-    const linha = estado.linhas[estado.linhaAtual];
+    for (let i = 0; i < palavrasDoJogo.length; i++) {
+        let span = document.createElement("span");
 
-    const div = document.createElement("div");
-    div.classList.add("line");
-
-    linha.forEach(palavra => {
-        const span = document.createElement("span");
-
-        span.textContent = palavra;
+        span.innerHTML = palavrasDoJogo[i];
         span.classList.add("word");
 
-        div.appendChild(span);
-    });
+        if (i == palavraAtual) {
+            span.classList.add("current");
+        }
 
-    container.appendChild(div);
-
-    atualizarDestaque();
+        container.appendChild(span);
+    }
 }
 
-// =========================
-// DESTAQUE
-// =========================
+function iniciarJogo() {
+    clearInterval(intervalo);
 
-function atualizarDestaque() {
-    document.querySelectorAll(".word").forEach((el, i) => {
-        el.classList.toggle("current", i === estado.palavraAtual);
-    });
-}
-
-// =========================
-// INICIAR JOGO
-// =========================
-
-async function iniciarJogo() {
-    clearInterval(estado.intervalo);
-
+    palavraAtual = 0;
+    tempo = 30;
+    acertos = 0;
+    erros = 0;
+    totalDigitadas = 0;
     jogoFinalizado = false;
-
-    if (palavrasBase.length === 0) {
-        await carregarPalavras();
-    }
-
-    if (palavrasBase.length === 0) {
-        alert("Erro ao carregar palavras. Verifique se o servidor está rodando.");
-        return;
-    }
-
-    estado = {
-        linhas: gerarPalavras(),
-        linhaAtual: 0,
-        palavraAtual: 0,
-        tempo: 30,
-        intervalo: null,
-        acertos: 0,
-        erros: 0,
-        totalDigitadas: 0
-    };
 
     input.disabled = false;
     input.value = "";
     input.focus();
 
-    timer.textContent = estado.tempo;
+    timer.innerHTML = tempo;
 
-    renderizarLinha();
-
+    sortearPalavras();
+    mostrarPalavras();
     iniciarTimer();
 }
 
-// =========================
-// TIMER
-// =========================
-
 function iniciarTimer() {
-    clearInterval(estado.intervalo);
+    intervalo = setInterval(function () {
+        tempo--;
+        timer.innerHTML = tempo;
 
-    estado.intervalo = setInterval(() => {
-        estado.tempo--;
-
-        if (estado.tempo <= 0) {
-            estado.tempo = 0;
-            timer.textContent = 0;
-
-            clearInterval(estado.intervalo);
-
-            input.disabled = true;
-
-            calcularResultado();
-
-            return;
+        if (tempo <= 0) {
+            finalizarJogo();
         }
-
-        timer.textContent = estado.tempo;
     }, 1000);
 }
 
-// =========================
-// INPUT
-// =========================
+input.addEventListener("keydown", function (evento) {
+    if (evento.key == " ") {
+        evento.preventDefault();
 
-input.addEventListener("keydown", (e) => {
-    if (input.disabled || jogoFinalizado) return;
-
-    if (!estado.linhas.length) return;
-
-    const palavraCorreta = estado.linhas[estado.linhaAtual][estado.palavraAtual];
-
-    const palavrasDOM = document.querySelectorAll(".word");
-
-    const atual = palavrasDOM[estado.palavraAtual];
-
-    if (e.key === " ") {
-        e.preventDefault();
-
-        const palavraDigitada = input.value.trim();
-
-        if (palavraDigitada === palavraCorreta) {
-            atual.classList.add("correct");
-            estado.acertos++;
-        } else {
-            atual.classList.add("error");
-            estado.erros++;
-        }
-
-        estado.totalDigitadas++;
-
-        proximaPalavra();
-    }
-
-    if (e.key === "Enter") {
-        e.preventDefault();
-
-        clearInterval(estado.intervalo);
-
-        estado.tempo = 0;
-        timer.textContent = 0;
-
-        input.disabled = true;
-
-        calcularResultado();
-    }
-});
-
-// =========================
-// PRÓXIMA PALAVRA
-// =========================
-
-function proximaPalavra() {
-    estado.palavraAtual++;
-
-    input.value = "";
-
-    if (estado.palavraAtual >= estado.linhas[estado.linhaAtual].length) {
-        estado.linhaAtual++;
-        estado.palavraAtual = 0;
-
-        if (estado.linhaAtual >= estado.linhas.length) {
-            clearInterval(estado.intervalo);
-            input.disabled = true;
-            calcularResultado();
+        if (jogoFinalizado == true) {
             return;
         }
 
-        renderizarLinha();
-    } else {
-        atualizarDestaque();
+        let palavraDigitada = input.value.trim();
+        let palavraCorreta = palavrasDoJogo[palavraAtual];
+
+        let palavrasTela = document.querySelectorAll(".word");
+        let palavraNaTela = palavrasTela[palavraAtual];
+
+        if (palavraDigitada == palavraCorreta) {
+            palavraNaTela.classList.add("correct");
+            acertos++;
+        } else {
+            palavraNaTela.classList.add("error");
+            erros++;
+        }
+
+        totalDigitadas++;
+        palavraAtual++;
+
+        input.value = "";
+
+        if (palavraAtual >= palavrasDoJogo.length) {
+            sortearPalavras();
+            palavraAtual = 0;
+            mostrarPalavras();
+        } else {
+            palavrasTela = document.querySelectorAll(".word");
+
+            for (let i = 0; i < palavrasTela.length; i++) {
+                palavrasTela[i].classList.remove("current");
+            }
+
+            palavrasTela[palavraAtual].classList.add("current");
+        }
     }
-}
 
-// =========================
-// RESULTADO
-// =========================
+    if (evento.key == "Enter") {
+        finalizarJogo();
+    }
+});
 
-function calcularResultado() {
-    if (jogoFinalizado) return;
+function finalizarJogo() {
+    if (jogoFinalizado == true) {
+        return;
+    }
 
     jogoFinalizado = true;
 
-    const tempoMinutos = 30 / 60;
+    clearInterval(intervalo);
 
-    const wpm = Math.round(estado.acertos / tempoMinutos);
+    tempo = 0;
+    timer.innerHTML = 0;
+    input.disabled = true;
 
-    const precisao = estado.totalDigitadas > 0
-        ? Math.round((estado.acertos / estado.totalDigitadas) * 100)
-        : 0;
-
-    finalizarTeste(wpm, precisao, 30);
+    calcularResultado();
 }
 
-// =========================
-// FINALIZAR
-// =========================
+function calcularResultado() {
+    let tempoMinutos = 30 / 60;
 
-function finalizarTeste(wpm, precisao, tempo) {
-    var fkUsuario = sessionStorage.ID_USUARIO || 1;
+    let wpm = Math.round(acertos / tempoMinutos);
+
+    let precisao = 0;
+
+    if (totalDigitadas > 0) {
+        precisao = Math.round((acertos / totalDigitadas) * 100);
+    }
+
+    salvarResultado(wpm, precisao, 30);
+}
+
+function salvarResultado(wpm, precisao, tempo) {
+    let fkUsuario = sessionStorage.ID_USUARIO || 1;
 
     fetch("/resultado/cadastrar", {
         method: "POST",
@@ -272,29 +174,20 @@ function finalizarTeste(wpm, precisao, tempo) {
             fkUsuario: fkUsuario
         })
     })
-        .then(() => {
-            mostrarDashboardFinal(wpm, precisao, tempo, fkUsuario);
+        .then(function () {
+            mostrarResultado(wpm, precisao, tempo);
         })
-        .catch(erro => {
+        .catch(function (erro) {
             console.log("Erro ao salvar resultado:", erro);
-            mostrarDashboardFinal(wpm, precisao, tempo, fkUsuario);
+            mostrarResultado(wpm, precisao, tempo);
         });
 }
 
-// =========================
-// MOSTRAR DASHBOARD FINAL
-// =========================
-
-function mostrarDashboardFinal(wpm, precisao, tempo, fkUsuario) {
-
+function mostrarResultado(wpm, precisao, tempo) {
     document.getElementById("overlay").style.display = "block";
-
     document.getElementById("card_resultado").style.display = "flex";
 
     document.getElementById("wpm_final").innerHTML = wpm;
-
     document.getElementById("precisao_final").innerHTML = precisao;
-
     document.getElementById("tempo_final").innerHTML = tempo;
-
 }

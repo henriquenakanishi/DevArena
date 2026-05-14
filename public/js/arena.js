@@ -12,6 +12,8 @@ let palavrasBase = [
 
 let palavrasDoJogo = [];
 let palavraAtual = 0;
+let paginaAtual = 0;
+let palavrasPorPagina = 10;
 let tempo = 30;
 let intervalo = null;
 
@@ -36,7 +38,7 @@ function sortearPalavras() {
 function mostrarPalavras() {
     container.innerHTML = "";
 
-    for (let i = 0; i < palavrasDoJogo.length; i++) {
+    for (let i = paginaAtual * palavrasPorPagina; i < (paginaAtual + 1) * palavrasPorPagina; i++) {
         let span = document.createElement("span");
 
         span.innerHTML = palavrasDoJogo[i];
@@ -94,7 +96,8 @@ input.addEventListener("keydown", function (evento) {
         let palavraCorreta = palavrasDoJogo[palavraAtual];
 
         let palavrasTela = document.querySelectorAll(".word");
-        let palavraNaTela = palavrasTela[palavraAtual];
+        let palavraNaTela = palavrasTela[palavraAtual % 10];
+        
 
         if (palavraDigitada == palavraCorreta) {
             palavraNaTela.classList.add("correct");
@@ -107,21 +110,13 @@ input.addEventListener("keydown", function (evento) {
         totalDigitadas++;
         palavraAtual++;
 
+        if (totalDigitadas % 10 == 0) {
+            paginaAtual++;
+            mostrarPalavras();
+        }
+
         input.value = "";
 
-        if (palavraAtual >= palavrasDoJogo.length) {
-            sortearPalavras();
-            palavraAtual = 0;
-            mostrarPalavras();
-        } else {
-            palavrasTela = document.querySelectorAll(".word");
-
-            for (let i = 0; i < palavrasTela.length; i++) {
-                palavrasTela[i].classList.remove("current");
-            }
-
-            palavrasTela[palavraAtual].classList.add("current");
-        }
     }
 
     if (evento.key == "Enter") {
@@ -190,4 +185,4 @@ function mostrarResultado(wpm, precisao, tempo) {
     document.getElementById("wpm_final").innerHTML = wpm;
     document.getElementById("precisao_final").innerHTML = precisao;
     document.getElementById("tempo_final").innerHTML = tempo;
-}
+}   

@@ -586,16 +586,11 @@ header {
 #wordContainer {
     width: 900px;
     max-width: 90%;
-
     display: flex;
     flex-wrap: wrap;
-
     gap: 14px;
-
     line-height: 60px;
-
-    overflow: hidden;
-
+    overflow: hidden; 
     max-height: 120px;
 }
 
